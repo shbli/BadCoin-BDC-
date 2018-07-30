@@ -3,6 +3,21 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+/*
+
+The chain needs to be open for anyone to connect to it. (Done)
+The target block time is 30 seconds.
+The mining reward is 100 coins per block and halves every 100 blocks.
+The genesis block needs to have a nonce of “1337”.
+The blockchain needs to support coin transactions
+The blockchain needs to protect against double spending
+The blockchain needs to allow adding optional extra data to each transaction, which is included in the tx hash
+The blockchain needs to allow adding optional extra data to each block (and there needs to be a way for a miner to set it)
+Usage of coin creation services like Coincreator and Cryptolife is not allowed, but manually forking an existing coin is allowed.
+
+
+*/
+
 #ifndef BITCOIN_CHAINPARAMS_H
 #define BITCOIN_CHAINPARAMS_H
 
