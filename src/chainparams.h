@@ -7,7 +7,7 @@
 
 The chain needs to be open for anyone to connect to it. (Done)
 The target block time is 30 seconds. (Done)
-The mining reward is 100 coins per block initially.
+The mining reward is 100 coins per block initially. (Done)
 The mining reward halves every 100 blocks. (Done)
 The genesis block needs to have a nonce of “1337”. (Done)
 The blockchain needs to support coin transactions (Done)

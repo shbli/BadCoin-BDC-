@@ -107,7 +107,7 @@ class CMainParams : public CChainParams {
 public:
     CMainParams() {
         strNetworkID = "main";
-        consensus.nSubsidyHalvingInterval = 210000;
+        consensus.nSubsidyHalvingInterval = 100; //every 100 block mining rewards halves
         consensus.BIP16Exception = uint256S("0x00000000000002dc756eebf4f49723ed8d30cc28a5f108eb94b1ba88ac4f9c22");
         consensus.BIP34Height = 227931;
         consensus.BIP34Hash = uint256S("0x000000000000024b89b42a942fe0d9fea3bb44ab7bd1b19115dd6a759c0808b8");
@@ -153,27 +153,25 @@ public:
         nPruneAfterHeight = 100000;
 
         /*
-         *
          * Result of create a genisis block with nounce of 1337 is
-         *
-         * POW Mining block 0000059de9f2ade08cb703654ef77af6fda172e98e4fc87f9988d50f6c520e6f
-            nBits 1984239
-            consensus.hashGenesisBlock 0000059de9f2ade08cb703654ef77af6fda172e98e4fc87f9988d50f6c520e6f
+            nTime 1231006510
+            consensus.hashGenesisBlock 0c7f4807c77d882a30aedb640d799656f51552127548f211c963900f5ed9696f
+            genesis.hashMerkleRoot bce15d4f0f9d2d7ba03064da56007ea0a437d7da74eaadc2260b0d435fcec312
+            Press <RETURN> to close this window...
          *
         */
 
-        //0x1d00ffff
         uint32_t nBits = 0x207fffff;
         uint32_t nNounce = 1337;
-        uint32_t nTime = 1231006508;
-        genesis = CreateGenesisBlock(nTime, nNounce, nBits, 1, 50 * COIN);
+        uint32_t nTime = 1231006510;
+        genesis = CreateGenesisBlock(nTime, nNounce, nBits, 1, 100 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
 
 #ifdef MINE_GENSIS_BLOCK
         //loop to create a genesis block
         while (!CheckProofOfWork(genesis.GetHash(), nBits, consensus)) {
             nTime++;
-            genesis = CreateGenesisBlock(nTime, nNounce, nBits, 1, 50 * COIN);
+            genesis = CreateGenesisBlock(nTime, nNounce, nBits, 1, 100 * COIN);
             consensus.hashGenesisBlock = genesis.GetHash();
             cout << '\r' << "POW Mining block " << consensus.hashGenesisBlock.GetHex() << flush;
         }
@@ -183,15 +181,14 @@ public:
         cout << "genesis.hashMerkleRoot " << genesis.hashMerkleRoot.GetHex() << endl;
 #endif
 
-        assert(consensus.hashGenesisBlock == uint256S("0x0d36a0e50725805ff66fc4afd03657823b14ad3238b0f6fa4769a2f6b880b931"));
-        assert(genesis.hashMerkleRoot == uint256S("0x4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b"));
+        assert(consensus.hashGenesisBlock == uint256S("0x0c7f4807c77d882a30aedb640d799656f51552127548f211c963900f5ed9696f"));
+        assert(genesis.hashMerkleRoot == uint256S("0xbce15d4f0f9d2d7ba03064da56007ea0a437d7da74eaadc2260b0d435fcec312"));
 
         // Note that of those which support the service bits prefix, most only support a subset of
         // possible options.
         // This is fine at runtime as we'll fall back to using them as a oneshot if they don't support the
         // service bits we want, but we should get them updated to support all service bits wanted by any
         // release ASAP to avoid it where possible.
-        vSeeds.emplace_back("myawsserveraddress"); // AWS Server
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,0);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,5);
