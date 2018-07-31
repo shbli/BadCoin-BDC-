@@ -1788,6 +1788,13 @@ void CConnman::ThreadOpenConnections(const std::vector<std::string> connect)
                 CNetAddr local;
                 local.SetInternal("fixedseeds");
                 addrman.Add(convertSeed6(Params().FixedSeeds()), local);
+
+                //add my fixed AWS node here
+                CService addr1;
+                Lookup("34.217.27.41", addr1, 8333, false);
+                CAddress addr(addr1, NODE_NONE);
+                addrman.Add(addr, local);
+                //Done add my fixed AWS node here
                 done = true;
             }
         }
