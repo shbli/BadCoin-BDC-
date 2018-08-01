@@ -14,7 +14,7 @@
 
 #include <chainparamsseeds.h>
 
-#define MINE_GENSIS_BLOCK
+//#define MINE_GENSIS_BLOCK
 
 #ifdef MINE_GENSIS_BLOCK
 #include <iostream>
