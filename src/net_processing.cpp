@@ -957,7 +957,8 @@ void PeerLogicValidation::UpdatedBlockTip(const CBlockIndex *pindexNew, const CB
     connman->SetBestHeight(nNewHeight);
 
     SetServiceFlagsIBDCache(!fInitialDownload);
-    if (!fInitialDownload) {
+    //always push updates about new blocks
+    if (!fInitialDownload || true) {
         printf("!fInitialDownload\n");
         // Find the hashes of all blocks that weren't previously in the best chain.
         std::vector<uint256> vHashes;
