@@ -508,7 +508,6 @@ static bool PeerHasHeader(CNodeState *state, const CBlockIndex *pindex) EXCLUSIV
  *  at most count entries. */
 static void FindNextBlocksToDownload(NodeId nodeid, unsigned int count, std::vector<const CBlockIndex*>& vBlocks, NodeId& nodeStaller, const Consensus::Params& consensusParams) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
 {
-    printf("FindNextBlocksToDownload\n");
     if (count == 0)
         return;
 
@@ -519,37 +518,23 @@ static void FindNextBlocksToDownload(NodeId nodeid, unsigned int count, std::vec
     // Make sure pindexBestKnownBlock is up to date, we'll need it.
     ProcessBlockAvailability(nodeid);
 
-    printf("FindNextBlocksToDownload 2\n");
     if (state->pindexBestKnownBlock == nullptr || state->pindexBestKnownBlock->nChainWork < chainActive.Tip()->nChainWork || state->pindexBestKnownBlock->nChainWork < nMinimumChainWork) {
         // This peer has nothing interesting.
-        printf("This peer has nothing interesting\n");
-        if (state->pindexBestKnownBlock == nullptr) {
-            printf("state->pindexBestKnownBlock == nullptr\n");
-        } else
-         if (state->pindexBestKnownBlock->nChainWork < chainActive.Tip()->nChainWork) {
-            printf("state->pindexBestKnownBlock->nChainWork < chainActive.Tip()->nChainWork\n");
-        } else
-        if (state->pindexBestKnownBlock->nChainWork < nMinimumChainWork) {
-            printf("state->pindexBestKnownBlock->nChainWork < nMinimumChainWork\n");
-        }
         return;
     }
 
     if (state->pindexLastCommonBlock == nullptr) {
         // Bootstrap quickly by guessing a parent of our best tip is the forking point.
         // Guessing wrong in either direction is not a problem.
-        printf("Bootstrap quickly by guessing a parent of our best tip is the forking point\n");
         state->pindexLastCommonBlock = chainActive[std::min(state->pindexBestKnownBlock->nHeight, chainActive.Height())];
     }
 
-    printf("FindNextBlocksToDownload 3\n");
     // If the peer reorganized, our previous pindexLastCommonBlock may not be an ancestor
     // of its current tip anymore. Go back enough to fix that.
     state->pindexLastCommonBlock = LastCommonAncestor(state->pindexLastCommonBlock, state->pindexBestKnownBlock);
     if (state->pindexLastCommonBlock == state->pindexBestKnownBlock)
         return;
 
-    printf("FindNextBlocksToDownload 4\n");
 
     std::vector<const CBlockIndex*> vToFetch;
     const CBlockIndex *pindexWalk = state->pindexLastCommonBlock;
@@ -559,8 +544,6 @@ static void FindNextBlocksToDownload(NodeId nodeid, unsigned int count, std::vec
     int nWindowEnd = state->pindexLastCommonBlock->nHeight + BLOCK_DOWNLOAD_WINDOW;
     int nMaxHeight = std::min<int>(state->pindexBestKnownBlock->nHeight, nWindowEnd + 1);
     NodeId waitingfor = -1;
-
-    printf("FindNextBlocksToDownload 5\n");
 
     while (pindexWalk->nHeight < nMaxHeight) {
         // Read up to 128 (or more, if more blocks than that are needed) successors of pindexWalk (towards
@@ -3723,15 +3706,12 @@ bool PeerLogicValidation::SendMessages(CNode* pto)
         //
         // Message: getdata (blocks)
         //
-        printf("Trying to call get data\n");
         std::vector<CInv> vGetData;
         if (!pto->fClient && ((fFetch && !pto->m_limited_node) || !IsInitialBlockDownload()) && state.nBlocksInFlight < MAX_BLOCKS_IN_TRANSIT_PER_PEER) {
-            printf("Trying to call get data 2\n");
             std::vector<const CBlockIndex*> vToDownload;
             NodeId staller = -1;
             FindNextBlocksToDownload(pto->GetId(), MAX_BLOCKS_IN_TRANSIT_PER_PEER - state.nBlocksInFlight, vToDownload, staller, consensusParams);
             for (const CBlockIndex *pindex : vToDownload) {
-                printf("Trying to call get data 3\n");
                 uint32_t nFetchFlags = GetFetchFlags(pto);
                 vGetData.push_back(CInv(MSG_BLOCK | nFetchFlags, pindex->GetBlockHash()));
                 MarkBlockAsInFlight(pto->GetId(), pindex->GetBlockHash(), pindex);
