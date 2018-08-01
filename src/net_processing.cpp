@@ -958,6 +958,7 @@ void PeerLogicValidation::UpdatedBlockTip(const CBlockIndex *pindexNew, const CB
 
     SetServiceFlagsIBDCache(!fInitialDownload);
     if (!fInitialDownload) {
+        printf("!fInitialDownload\n");
         // Find the hashes of all blocks that weren't previously in the best chain.
         std::vector<uint256> vHashes;
         const CBlockIndex *pindexToAnnounce = pindexNew;
@@ -970,8 +971,10 @@ void PeerLogicValidation::UpdatedBlockTip(const CBlockIndex *pindexNew, const CB
                 break;
             }
         }
+        printf("!vHashes.size = %i\n", vHashes.size());
         // Relay inventory, but don't relay old inventory during initial block download.
         connman->ForEachNode([nNewHeight, &vHashes](CNode* pnode) {
+            printf("Pushing hash to node");
             if (nNewHeight > (pnode->nStartingHeight != -1 ? pnode->nStartingHeight - 2000 : 0)) {
                 for (const uint256& hash : reverse_iterate(vHashes)) {
                     printf("pnode->PushBlockHash(hash);\n");
