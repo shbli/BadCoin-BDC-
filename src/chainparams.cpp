@@ -14,7 +14,7 @@
 
 #include <chainparamsseeds.h>
 
-//#define MINE_GENSIS_BLOCK
+#define MINE_GENSIS_BLOCK
 
 #ifdef MINE_GENSIS_BLOCK
 #include <iostream>
@@ -163,7 +163,7 @@ public:
 
         uint32_t nBits = 0x207fffff;
         uint32_t nNounce = 1337;
-        uint32_t nTime = 1231006510;
+        uint32_t nTime = 1533116078;
         genesis = CreateGenesisBlock(nTime, nNounce, nBits, 1, 100 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
 
@@ -181,7 +181,7 @@ public:
         cout << "genesis.hashMerkleRoot " << genesis.hashMerkleRoot.GetHex() << endl;
 #endif
 
-        assert(consensus.hashGenesisBlock == uint256S("0x0c7f4807c77d882a30aedb640d799656f51552127548f211c963900f5ed9696f"));
+        assert(consensus.hashGenesisBlock == uint256S("0x22203da03427fe4cc8070fb150fe18ac4e51a8c473cd425883c3b07d747eee03"));
         assert(genesis.hashMerkleRoot == uint256S("0xbce15d4f0f9d2d7ba03064da56007ea0a437d7da74eaadc2260b0d435fcec312"));
 
         // Note that of those which support the service bits prefix, most only support a subset of
