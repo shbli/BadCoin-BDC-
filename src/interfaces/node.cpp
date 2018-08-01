@@ -92,6 +92,7 @@ class NodeImpl : public Node
     }
     bool getNodesStats(NodesStats& stats) override
     {
+        printf("getNodesStats\n");
         stats.clear();
 
         if (g_connman) {
@@ -104,9 +105,12 @@ class NodeImpl : public Node
             }
 
             // Try to retrieve the CNodeStateStats for each node.
+            printf("Try to retrieve the CNodeStateStats for each node\n");
             TRY_LOCK(::cs_main, lockMain);
             if (lockMain) {
+                printf("lockMain\n");
                 for (auto& node_stats : stats) {
+                    printf("looping in node\n");
                     std::get<1>(node_stats) =
                         GetNodeStateStats(std::get<0>(node_stats).nodeid, std::get<2>(node_stats));
                 }

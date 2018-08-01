@@ -108,11 +108,11 @@ public:
     CMainParams() {
         strNetworkID = "main";
         consensus.nSubsidyHalvingInterval = 100; //every 100 block mining rewards halves
-        consensus.BIP16Exception = uint256S("0x00000000000002dc756eebf4f49723ed8d30cc28a5f108eb94b1ba88ac4f9c22");
-        consensus.BIP34Height = 227931;
-        consensus.BIP34Hash = uint256S("0x000000000000024b89b42a942fe0d9fea3bb44ab7bd1b19115dd6a759c0808b8");
-        consensus.BIP65Height = 388381; // 000000000000000004c2b624ed5d7756c508d90fd0da2c7c679febfa6c4735f0
-        consensus.BIP66Height = 363725; // 00000000000000000379eaa19dce8c9b722d46ae6a57c2f1a988119488b50931
+        consensus.BIP16Exception = uint256S("0");
+        consensus.BIP34Height = 0;
+        consensus.BIP34Hash = uint256S("0");
+        consensus.BIP65Height = 0; // 000000000000000004c2b624ed5d7756c508d90fd0da2c7c679febfa6c4735f0
+        consensus.BIP66Height = 0; // 00000000000000000379eaa19dce8c9b722d46ae6a57c2f1a988119488b50931
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetSpacing = 0.5 * 60; // 30 second spacing between each coin
         consensus.nPowTargetTimespan = consensus.nPowTargetSpacing * 100; // every 100 block (0.5 minute x 100 = 50 minutes)
@@ -206,7 +206,7 @@ public:
 
         checkpointData = {
             {
-                { 0, uint256S("0x22203da03427fe4cc8070fb150fe18ac4e51a8c473cd425883c3b07d747eee03")}
+                { 0, uint256S("22203da03427fe4cc8070fb150fe18ac4e51a8c473cd425883c3b07d747eee03")}
                 /*
                 { 11111, uint256S("0x0000000069e244f73d78e8fd29ba2fd2ed618bd6fa2ee92559f542fdb26e7c1d")},
                 { 33333, uint256S("0x000000002dd5588a74784eaa7ab0507a18ad16a236e7b1ce69f00d7ddfb5d0a6")},
