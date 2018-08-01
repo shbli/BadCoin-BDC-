@@ -1190,7 +1190,6 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 
 bool IsInitialBlockDownload()
 {
-    LogPrintf("IsInitialBlockDownload Forced to false\n");
     return false;
     // Once this function has returned false, it must remain false.
     static std::atomic<bool> latchToFalse{false};
