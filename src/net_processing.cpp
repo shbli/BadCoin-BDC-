@@ -403,7 +403,6 @@ static bool MarkBlockAsInFlight(NodeId nodeid, const uint256& hash, const CBlock
 
 /** Check whether the last unknown block a peer advertised is not yet known. */
 static void ProcessBlockAvailability(NodeId nodeid) EXCLUSIVE_LOCKS_REQUIRED(cs_main) {
-    printf("ProcessBlockAvailability\n");
     CNodeState *state = State(nodeid);
     assert(state != nullptr);
 
@@ -415,8 +414,6 @@ static void ProcessBlockAvailability(NodeId nodeid) EXCLUSIVE_LOCKS_REQUIRED(cs_
             }
             state->hashLastUnknownBlock.SetNull();
         }
-    } else {
-        printf("state->hashLastUnknownBlock.IsNull()\n");
     }
 }
 
