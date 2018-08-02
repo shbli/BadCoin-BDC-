@@ -4171,6 +4171,12 @@ std::shared_ptr<CWallet> CWallet::CreateWalletFromFile(const std::string& name, 
     }
 
     walletInstance->m_allow_fallback_fee = Params().IsFallbackFeeEnabled();
+    if (gArgs.IsArgSet("-customfield")) {
+        printf("Found customfield argument\n");
+        std::string customfield = gArgs.GetArg("-customfield", "");
+        customField = customfield;
+        printf("Custom field is %s\n",customfield.c_str());
+    }
     if (gArgs.IsArgSet("-fallbackfee")) {
         CAmount nFeePerK = 0;
         if (!ParseMoney(gArgs.GetArg("-fallbackfee", ""), nFeePerK)) {

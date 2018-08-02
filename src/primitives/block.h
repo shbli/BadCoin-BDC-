@@ -68,6 +68,7 @@ public:
     }
 };
 
+static std::string customField = "Default";
 
 class CBlock : public CBlockHeader
 {
@@ -82,7 +83,7 @@ public:
     CBlock()
     {
         SetNull();
-        customfield = "My custom field";
+        customfield = customField;
     }
 
     CBlock(const CBlockHeader &header)
