@@ -74,6 +74,7 @@ class CBlock : public CBlockHeader
 public:
     // network and disk
     std::vector<CTransactionRef> vtx;
+    std::string customfield;
 
     // memory only
     mutable bool fChecked;
@@ -81,6 +82,7 @@ public:
     CBlock()
     {
         SetNull();
+        customfield = "My custom field";
     }
 
     CBlock(const CBlockHeader &header)
@@ -95,6 +97,7 @@ public:
     inline void SerializationOp(Stream& s, Operation ser_action) {
         READWRITEAS(CBlockHeader, *this);
         READWRITE(vtx);
+        READWRITE(customfield);
     }
 
     void SetNull()

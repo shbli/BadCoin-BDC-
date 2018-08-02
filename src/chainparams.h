@@ -12,7 +12,7 @@ The mining reward halves every 100 blocks. (Done)
 The genesis block needs to have a nonce of “1337”. (Done)
 The blockchain needs to support coin transactions (Done)
 The blockchain needs to protect against double spending (Done)
-The blockchain needs to allow adding optional extra data to each transaction, which is included in the tx hash
+The blockchain needs to allow adding optional extra data to each transaction, which is included in the tx hash (Done)
 The blockchain needs to allow adding optional extra data to each block (and there needs to be a way for a miner to set it)
 
 */
