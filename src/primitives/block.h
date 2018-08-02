@@ -68,12 +68,12 @@ public:
     }
 };
 
-static std::string CUSTOMFIELD = "Default";
 
 class CBlock : public CBlockHeader
 {
 public:
     // network and disk
+    static std::string CUSTOMFIELD;
     std::vector<CTransactionRef> vtx;
     std::string customfield;
 
