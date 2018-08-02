@@ -73,7 +73,6 @@ class CBlock : public CBlockHeader
 {
 public:
     // network and disk
-    static std::string CUSTOMFIELD;
     std::vector<CTransactionRef> vtx;
     std::string customfield;
 
@@ -97,7 +96,6 @@ public:
     inline void SerializationOp(Stream& s, Operation ser_action) {
         READWRITEAS(CBlockHeader, *this);
         READWRITE(vtx);
-        READWRITE(customfield);
     }
 
     void SetNull()
