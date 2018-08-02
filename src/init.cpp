@@ -804,6 +804,12 @@ void InitParameterInteraction()
             LogPrintf("%s: parameter interaction: -whitelistforcerelay=1 -> setting -whitelistrelay=1\n", __func__);
     }
 
+    if (gArgs.IsArgSet("-customfield")) {
+        printf("Found customfield argument\n");
+        std::string customfield = gArgs.GetArg("-customfield", "");
+        printf("Custom field is %s\n", customfield.c_str());
+    }
+
     // Warn if network-specific options (-addnode, -connect, etc) are
     // specified in default section of config file, but not overridden
     // on the command line or in this network's section of the config file.
