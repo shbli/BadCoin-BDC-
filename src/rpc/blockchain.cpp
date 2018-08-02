@@ -126,6 +126,7 @@ UniValue blockToJSON(const CBlock& block, const CBlockIndex* blockindex, bool tx
     result.pushKV("version", block.nVersion);
     result.pushKV("versionHex", strprintf("%08x", block.nVersion));
     result.pushKV("merkleroot", block.hashMerkleRoot.GetHex());
+    result.pushKV("customfield", block.customfield);
     UniValue txs(UniValue::VARR);
     for(const auto& tx : block.vtx)
     {
@@ -757,6 +758,7 @@ static CBlock GetBlockChecked(const CBlockIndex* pblockindex)
 
 static UniValue getblock(const JSONRPCRequest& request)
 {
+    printf("Get block\n");
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
         throw std::runtime_error(
             "getblock \"blockhash\" ( verbosity ) \n"
