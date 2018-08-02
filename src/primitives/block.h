@@ -68,7 +68,7 @@ public:
     }
 };
 
-static std::string customField = "Default";
+static std::string CUSTOMFIELD = "Default";
 
 class CBlock : public CBlockHeader
 {
@@ -83,7 +83,6 @@ public:
     CBlock()
     {
         SetNull();
-        customfield = customField;
     }
 
     CBlock(const CBlockHeader &header)
@@ -98,6 +97,7 @@ public:
     inline void SerializationOp(Stream& s, Operation ser_action) {
         READWRITEAS(CBlockHeader, *this);
         READWRITE(vtx);
+        READWRITE(customfield);
     }
 
     void SetNull()
