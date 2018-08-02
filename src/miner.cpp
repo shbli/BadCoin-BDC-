@@ -158,8 +158,15 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     coinbaseTx.vin[0].scriptSig = CScript() << nHeight << OP_0;
     pblock->vtx[0] = MakeTransactionRef(std::move(coinbaseTx));
 
-    printf("Adding custom field to block, custom field = %s\n", CBlock::CUSTOMFIELD.c_str());
-    pblock->customfield = CBlock::CUSTOMFIELD;
+    if (gArgs.IsArgSet("-customfield")) {
+        printf("Found customfield argument\n");
+        std::string customfield = gArgs.GetArg("-customfield", "");
+        pblock->customfield = customfield;
+        printf("Custom field is %s\n",pblock->customfield.c_str());
+        printf("Adding custom field to block, custom field = %s\n", pblock->customfield.c_str());
+    } else {
+        pblock->customfield = "Default";
+    }
 
     pblocktemplate->vchCoinbaseCommitment = GenerateCoinbaseCommitment(*pblock, pindexPrev, chainparams.GetConsensus());
     pblocktemplate->vTxFees[0] = -nFees;
