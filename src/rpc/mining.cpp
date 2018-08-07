@@ -731,6 +731,16 @@ static UniValue submitblock(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "Block decode failed");
     }
 
+    //set up the custom field
+    if (gArgs.IsArgSet("-customfield")) {
+        printf("Found customfield argument\n");
+        std::string customfield = gArgs.GetArg("-customfield", "");
+        block.customfield = customfield;
+        printf("Adding custom field to block, custom field = %s\n", block.customfield.c_str());
+    } else {
+        block.customfield = "Default";
+    }
+
     if (block.vtx.empty() || !block.vtx[0]->IsCoinBase()) {
         printf("throw JSONRPCError(RPC_DESERIALIZATION_ERROR, Block does not start with a coinbase);\n");
         throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "Block does not start with a coinbase");
