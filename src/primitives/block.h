@@ -76,11 +76,14 @@ public:
     std::vector<CTransactionRef> vtx;
     std::string customfield;
 
+    bool serializeCustomField;
+
     // memory only
     mutable bool fChecked;
 
     CBlock()
     {
+        serializeCustomField = true;
         SetNull();
     }
 
@@ -96,7 +99,9 @@ public:
     inline void SerializationOp(Stream& s, Operation ser_action) {
         READWRITEAS(CBlockHeader, *this);
         READWRITE(vtx);
-        READWRITEAS(std::string, customfield);
+        if (serializeCustomField) {
+            READWRITEAS(std::string, customfield);
+        }
     }
 
     void SetNull()

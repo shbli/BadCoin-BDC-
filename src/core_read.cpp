@@ -155,10 +155,24 @@ bool DecodeHexBlk(CBlock& block, const std::string& strHexBlk)
     try {
         ssBlock >> block;
     }
-    catch (const std::exception&) {
-        return false;
+    catch (const std::exception& e) {
+        printf("exception in DecodeHexBlk = %s", e.what());
+        if (block.serializeCustomField == true) {
+            //try one more time
+            block.serializeCustomField = false;
+            try {
+                ssBlock >> block;
+            }
+            catch (const std::exception& e) {
+                printf("exception after second try with block.serializeCustomField = false in DecodeHexBlk = %s", e.what());
+                block.serializeCustomField = true;
+                return false;
+            }
+
+        }
     }
 
+    block.serializeCustomField = true;
     return true;
 }
 
