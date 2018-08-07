@@ -56,7 +56,7 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
  */
 static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
-    const char* pszTimestamp = "The Times 03/Jan/2009 Chancellor on brink of second bailout for banks";
+    const char* pszTimestamp = "The Times 07/Aug/2018 Bad coin is going to take over the banks";
     const CScript genesisOutputScript = CScript() << ParseHex("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f") << OP_CHECKSIG;
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
@@ -113,13 +113,13 @@ public:
         consensus.BIP34Hash = uint256S("0");
         consensus.BIP65Height = 0; // 000000000000000004c2b624ed5d7756c508d90fd0da2c7c679febfa6c4735f0
         consensus.BIP66Height = 0; // 00000000000000000379eaa19dce8c9b722d46ae6a57c2f1a988119488b50931
-        consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.powLimit = uint256S("0fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetSpacing = 0.5 * 60; // 30 second spacing between each coin
         consensus.nPowTargetTimespan = consensus.nPowTargetSpacing * 100; // every 100 block (0.5 minute x 100 = 50 minutes)
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
         consensus.nRuleChangeActivationThreshold = 1916; // 95% of 2016
-        consensus.nMinerConfirmationWindow = 10; // nPowTargetTimespan / nPowTargetSpacing
+        consensus.nMinerConfirmationWindow = consensus.nPowTargetTimespan / consensus.nPowTargetSpacing;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
@@ -163,7 +163,7 @@ public:
 
         uint32_t nBits = 0x207fffff;
         uint32_t nNounce = 1337;
-        uint32_t nTime = 1533116078;
+        uint32_t nTime = 1533643956;
         genesis = CreateGenesisBlock(nTime, nNounce, nBits, 1, 100 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
 
@@ -181,8 +181,8 @@ public:
         cout << "genesis.hashMerkleRoot " << genesis.hashMerkleRoot.GetHex() << endl;
 #endif
 
-        assert(consensus.hashGenesisBlock == uint256S("0x22203da03427fe4cc8070fb150fe18ac4e51a8c473cd425883c3b07d747eee03"));
-        assert(genesis.hashMerkleRoot == uint256S("0xbce15d4f0f9d2d7ba03064da56007ea0a437d7da74eaadc2260b0d435fcec312"));
+        assert(consensus.hashGenesisBlock == uint256S("0x25f4dfe7e492f8c3b445bc4e540c4d4f57a22c56cf238e4cd684a3e9cb331a69"));
+        assert(genesis.hashMerkleRoot == uint256S("0xa902ee379406c2aed6fe5acfa80bde6d42cf492929f9bce3505b9d0f11578ecd"));
 
         // Note that of those which support the service bits prefix, most only support a subset of
         // possible options.
