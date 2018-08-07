@@ -262,19 +262,28 @@ static UniValue prioritisetransaction(const JSONRPCRequest& request)
 // NOTE: Assumes a conclusive result; if result is inconclusive, it must be handled by caller
 static UniValue BIP22ValidationResult(const CValidationState& state)
 {
-    if (state.IsValid())
+    printf("BIP22ValidationResult\n");
+    if (state.IsValid()) {
+        printf("return NullUniValue\n");
         return NullUniValue;
+    }
 
-    if (state.IsError())
+    if (state.IsError()) {
+        printf("throw JSONRPCError(RPC_VERIFY_ERROR, FormatStateMessage(state)\n");
         throw JSONRPCError(RPC_VERIFY_ERROR, FormatStateMessage(state));
+    }
     if (state.IsInvalid())
     {
         std::string strRejectReason = state.GetRejectReason();
-        if (strRejectReason.empty())
+        if (strRejectReason.empty()) {
+            printf("strRejectReason.empty rejected\n");
             return "rejected";
+        }
+        printf("strRejectReason %s \n", strRejectReason.c_str());
         return strRejectReason;
     }
     // Should be impossible
+    printf("return valid?;\n");
     return "valid?";
 }
 
@@ -696,6 +705,7 @@ protected:
 
 static UniValue submitblock(const JSONRPCRequest& request)
 {
+    printf("submitblock\n");
     // We allow 2 arguments for compliance with BIP22. Argument 2 is ignored.
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 2) {
         throw std::runtime_error(
@@ -729,9 +739,11 @@ static UniValue submitblock(const JSONRPCRequest& request)
         const CBlockIndex* pindex = LookupBlockIndex(hash);
         if (pindex) {
             if (pindex->IsValid(BLOCK_VALID_SCRIPTS)) {
+                printf("duplicate\n");
                 return "duplicate";
             }
             if (pindex->nStatus & BLOCK_FAILED_MASK) {
+                printf("duplicate-invalid\n");
                 return "duplicate-invalid";
             }
         }
@@ -745,6 +757,7 @@ static UniValue submitblock(const JSONRPCRequest& request)
         }
     }
 
+    printf("bool new_block\n");
     bool new_block;
     submitblock_StateCatcher sc(block.GetHash());
     RegisterValidationInterface(&sc);
@@ -753,11 +766,14 @@ static UniValue submitblock(const JSONRPCRequest& request)
     if (!new_block) {
         if (!accepted) {
             // TODO Maybe pass down fNewBlock to AcceptBlockHeader, so it is properly set to true in this case?
+            printf("invalid\n");
             return "invalid";
         }
+        printf("duplicate\n");
         return "duplicate";
     }
     if (!sc.found) {
+        printf("inconclusive\n");
         return "inconclusive";
     }
     return BIP22ValidationResult(sc.state);
