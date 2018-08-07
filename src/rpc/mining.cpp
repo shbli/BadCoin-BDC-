@@ -705,9 +705,10 @@ protected:
 
 static UniValue submitblock(const JSONRPCRequest& request)
 {
-    printf("submitblock\n");
+    printf("submitblock request.params.size() = %i\n", request.params.size());
     // We allow 2 arguments for compliance with BIP22. Argument 2 is ignored.
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 2) {
+        printf("throw std::runtime_error\n");
         throw std::runtime_error(
             "submitblock \"hexdata\"  ( \"dummy\" )\n"
             "\nAttempts to submit new block to network.\n"
