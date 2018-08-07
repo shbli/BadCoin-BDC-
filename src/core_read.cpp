@@ -150,26 +150,15 @@ bool DecodeHexBlk(CBlock& block, const std::string& strHexBlk)
     if (!IsHex(strHexBlk))
         return false;
 
+    block.serializeCustomField = false;
     std::vector<unsigned char> blockData(ParseHex(strHexBlk));
     CDataStream ssBlock(blockData, SER_NETWORK, PROTOCOL_VERSION);
     try {
         ssBlock >> block;
     }
     catch (const std::exception& e) {
-        printf("exception in DecodeHexBlk = %s", e.what());
-        if (block.serializeCustomField == true) {
-            //try one more time
-            block.serializeCustomField = false;
-            try {
-                ssBlock >> block;
-            }
-            catch (const std::exception& e) {
-                printf("exception after second try with block.serializeCustomField = false in DecodeHexBlk = %s", e.what());
-                block.serializeCustomField = true;
-                return false;
-            }
-
-        }
+        printf("exception in DecodeHexBlk = %s\n", e.what());
+        return false;
     }
 
     block.serializeCustomField = true;
