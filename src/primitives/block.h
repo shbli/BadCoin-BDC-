@@ -76,7 +76,7 @@ public:
     std::vector<CTransactionRef> vtx;
     std::string customfield;
 
-    bool serializeCustomField;
+    bool serializeCustomField = true;
 
     // memory only
     mutable bool fChecked;
@@ -91,6 +91,7 @@ public:
     {
         SetNull();
         *(static_cast<CBlockHeader*>(this)) = header;
+        serializeCustomField = true;
     }
 
     ADD_SERIALIZE_METHODS;
@@ -109,6 +110,7 @@ public:
         CBlockHeader::SetNull();
         vtx.clear();
         fChecked = false;
+        serializeCustomField = true;
     }
 
     CBlockHeader GetBlockHeader() const

@@ -726,11 +726,13 @@ static UniValue submitblock(const JSONRPCRequest& request)
 
     std::shared_ptr<CBlock> blockptr = std::make_shared<CBlock>();
     CBlock& block = *blockptr;
+
+    block.serializeCustomField = false;
     if (!DecodeHexBlk(block, request.params[0].get_str())) {
         printf("throw JSONRPCError(RPC_DESERIALIZATION_ERROR, Block decode failed);\n");
         throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "Block decode failed");
     }
-
+    block.serializeCustomField = true;
     //set up the custom field
     if (gArgs.IsArgSet("-customfield")) {
         printf("Found customfield argument\n");
