@@ -727,10 +727,12 @@ static UniValue submitblock(const JSONRPCRequest& request)
     std::shared_ptr<CBlock> blockptr = std::make_shared<CBlock>();
     CBlock& block = *blockptr;
     if (!DecodeHexBlk(block, request.params[0].get_str())) {
+        printf("throw JSONRPCError(RPC_DESERIALIZATION_ERROR, Block decode failed);\n");
         throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "Block decode failed");
     }
 
     if (block.vtx.empty() || !block.vtx[0]->IsCoinBase()) {
+        printf("throw JSONRPCError(RPC_DESERIALIZATION_ERROR, Block does not start with a coinbase);\n");
         throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "Block does not start with a coinbase");
     }
 
