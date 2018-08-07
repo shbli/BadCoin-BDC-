@@ -113,7 +113,7 @@ public:
         consensus.BIP34Hash = uint256S("0");
         consensus.BIP65Height = 0; // 000000000000000004c2b624ed5d7756c508d90fd0da2c7c679febfa6c4735f0
         consensus.BIP66Height = 0; // 00000000000000000379eaa19dce8c9b722d46ae6a57c2f1a988119488b50931
-        consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.powLimit = uint256S("6fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetSpacing = 0.5 * 60; // 30 second spacing between each coin
         consensus.nPowTargetTimespan = consensus.nPowTargetSpacing * 100; // every 100 block (0.5 minute x 100 = 50 minutes)
         consensus.fPowAllowMinDifficultyBlocks = false;
@@ -161,27 +161,29 @@ public:
          *
         */
 
-        uint32_t nBits = 0x207fffff;
+        uint32_t nBits = 544210942;
         uint32_t nNounce = 1337;
-        uint32_t nTime = 1533643956;
+        uint32_t nTime = 1532595379;
         genesis = CreateGenesisBlock(nTime, nNounce, nBits, 1, 100 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
 
 #ifdef MINE_GENSIS_BLOCK
         //loop to create a genesis block
         while (!CheckProofOfWork(genesis.GetHash(), nBits, consensus)) {
-            nTime++;
+            nTime--;
+            nBits--;
             genesis = CreateGenesisBlock(nTime, nNounce, nBits, 1, 100 * COIN);
             consensus.hashGenesisBlock = genesis.GetHash();
             cout << '\r' << "POW Mining block " << consensus.hashGenesisBlock.GetHex() << flush;
         }
 
-        cout << endl << "nTime " << nTime << endl;
-        cout << "consensus.hashGenesisBlock " << consensus.hashGenesisBlock.GetHex() << endl;
-        cout << "genesis.hashMerkleRoot " << genesis.hashMerkleRoot.GetHex() << endl;
+        cout << endl << "nBits " << nBits << endl;
+        cout << "nTime " << nTime << endl;
+        cout << "consensus.hashGenesisBlock 0x" << consensus.hashGenesisBlock.GetHex() << endl;
+        cout << "genesis.hashMerkleRoot 0x" << genesis.hashMerkleRoot.GetHex() << endl;
 #endif
 
-        assert(consensus.hashGenesisBlock == uint256S("0x25f4dfe7e492f8c3b445bc4e540c4d4f57a22c56cf238e4cd684a3e9cb331a69"));
+        assert(consensus.hashGenesisBlock == uint256S("0x2e8ded4021443c0ad83f91c934a8509fb49bc3480d0e89024b0be95aac5c60e3"));
         assert(genesis.hashMerkleRoot == uint256S("0xa902ee379406c2aed6fe5acfa80bde6d42cf492929f9bce3505b9d0f11578ecd"));
 
         // Note that of those which support the service bits prefix, most only support a subset of
